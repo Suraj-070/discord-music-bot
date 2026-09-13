@@ -661,7 +661,6 @@ async def play_next(guild):
 
 # ─── Commands ─────────────────────────────────────────────────────────────────
 @bot.command(name="music")
-@commands.has_permissions(manage_guild=True)
 async def setup(ctx):
     state = get_state(ctx.guild.id)
     embed = build_panel_embed(state)
@@ -697,17 +696,33 @@ async def make_app():
     app = web.Application()
     sio.attach(app)
 
-    # Health check / keep-alive
     async def index(request):
-        return web.Response(text="🎵 Music bot is alive!")
+        return web.Response(
+            text="🎵 Music bot is alive!",
+            headers={"Access-Control-Allow-Origin": "*"}
+        )
 
-    # Search endpoint for dashboard
     async def search_handler(request):
         q = request.rel_url.query.get('q', '')
         if not q:
-            return web.json_response({'results': []})
+            return web.json_response({'results': []}, headers={"Access-Control-Allow-Origin": "*"})
         results = await search_songs(q)
-        return web.json_response({'results': results})
+        return web.json_response({'results': results}, headers={"Access-Control-Allow-Origin": "*"})
+
+    @web.middleware
+    async def cors_middleware(request, handler):
+        if request.method == 'OPTIONS':
+            return web.Response(headers={
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "*",
+            })
+        response = await handler(request)
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        return response
+
+    app = web.Application(middlewares=[cors_middleware])
+    sio.attach(app)
 
     app.router.add_get('/', index)
     app.router.add_get('/search', search_handler)
