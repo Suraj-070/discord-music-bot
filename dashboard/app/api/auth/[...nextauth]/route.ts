@@ -1,5 +1,11 @@
-import NextAuth from "next-auth"
+import NextAuth, { DefaultSession } from "next-auth"
 import DiscordProvider from "next-auth/providers/discord"
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    accessToken?: string
+  }
+}
 
 const handler = NextAuth({
   providers: [
@@ -11,9 +17,7 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token
-      }
+      if (account) token.accessToken = account.access_token
       return token
     },
     async session({ session, token }) {
