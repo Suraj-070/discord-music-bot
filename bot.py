@@ -691,6 +691,12 @@ async def on_ready():
     print(f"✅ Bot ready: {bot.user}")
 
 
+
+@bot.event
+async def on_message(message):
+    print(f"📨 Message: {message.content}", flush=True)
+    await bot.process_commands(message)
+
 # ─── aiohttp + Socket.io App ──────────────────────────────────────────────────
 async def make_app():
     app = web.Application()
