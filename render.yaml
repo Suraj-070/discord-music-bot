@@ -2,10 +2,13 @@ services:
   - type: web
     name: discord-music-bot
     env: python
+    pythonVersion: "3.12"
     buildCommand: pip install -r requirements.txt
     startCommand: python bot.py
     envVars:
       - key: DISCORD_TOKEN
+        sync: false
+      - key: DASHBOARD_URL
         sync: false
       - key: PORT
         value: 8080
