@@ -1,5 +1,4 @@
 discord.py[voice]==2.3.2
-audioop-lts
 yt-dlp
 PyNaCl
 python-socketio[asyncio_client]
