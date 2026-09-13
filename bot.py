@@ -721,8 +721,16 @@ async def main():
     await runner.setup()
     site = web.TCPSite(runner, '0.0.0.0', PORT)
     await site.start()
-    print(f"✅ Server running on :{PORT}")
-    await bot.start(TOKEN)
+    print(f"✅ Server running on :{PORT}", flush=True)
+    print(f"🤖 Starting bot with token length: {len(TOKEN) if TOKEN else 0}", flush=True)
+    try:
+        await bot.start(TOKEN)
+    except discord.LoginFailure as e:
+        print(f"❌ Login failed: {e}", flush=True)
+        raise
+    except Exception as e:
+        print(f"❌ Bot error: {type(e).__name__}: {e}", flush=True)
+        raise
 
 
 asyncio.run(main())
