@@ -694,8 +694,18 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    print(f"📨 Message: {message.content}", flush=True)
+    print(f"📨 Message: {message.content!r} from {message.author}", flush=True)
+    if message.content.startswith("!"):
+        print(f"🎯 Command detected: {message.content}", flush=True)
     await bot.process_commands(message)
+
+@bot.event
+async def on_command_error(ctx, error):
+    print(f"❌ Command error: {error}", flush=True)
+
+@bot.event  
+async def on_command(ctx):
+    print(f"✅ Command invoked: {ctx.command}", flush=True)
 
 # ─── aiohttp + Socket.io App ──────────────────────────────────────────────────
 async def make_app():
