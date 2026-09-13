@@ -680,7 +680,10 @@ async def setup(ctx):
     msg = await ctx.send(embed=embed, view=view)
     state["panel_message"] = msg
     state["panel_channel"] = ctx.channel
-    await ctx.message.delete()
+    try:
+        await ctx.message.delete()
+    except:
+        pass
 
 
 @bot.event
