@@ -1,55 +1,51 @@
 # 🎵 Discord Music Bot
 
-Play music together in voice channels with a beautiful control panel UI.
+All-in-one Discord music bot with embedded Socket.io server and Next.js dashboard.
 
-## Setup
-
-### 1. Requirements
-- Python 3.10+
-- FFmpeg installed and added to PATH
-
-### 2. Install FFmpeg (Windows)
-Download from https://ffmpeg.org/download.html → add `bin` folder to PATH
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
+## Structure
+```
+/
+├── bot.py              ← Python bot + Socket.io server
+├── requirements.txt    
+├── render.yaml         ← Render deployment config
+└── dashboard/          ← Next.js dashboard (deploy to Vercel)
+    ├── app/
+    ├── components/
+    ├── hooks/
+    └── store/
 ```
 
-### 4. Create Discord Bot
-1. Go to https://discord.com/developers/applications
-2. New Application → Bot → Copy Token
-3. Enable: `MESSAGE CONTENT INTENT`, `SERVER MEMBERS INTENT`, `PRESENCE INTENT`
-4. Invite bot with scopes: `bot`, `applications.commands`
-5. Permissions: `Send Messages`, `Embed Links`, `Connect`, `Speak`, `Use Voice Activity`
+## Deploy
 
-### 5. Configure
-```bash
-cp .env.example .env
-# Add your DISCORD_TOKEN to .env
-```
+### Bot → Render
+1. Connect this repo to Render
+2. Root directory: `/` (default)
+3. Build: `pip install -r requirements.txt`
+4. Start: `python bot.py`
+5. Add env vars:
+   ```
+   DISCORD_TOKEN=...
+   DASHBOARD_URL=https://your-dashboard.vercel.app
+   PORT=8080
+   ```
 
-### 6. Run locally
-```bash
-python bot.py
-```
+### Dashboard → Vercel
+1. Connect this repo to Vercel
+2. Root directory: `dashboard`
+3. Add env vars:
+   ```
+   NEXT_PUBLIC_BOT_URL=https://your-bot.onrender.com
+   BOT_URL=https://your-bot.onrender.com
+   DISCORD_CLIENT_ID=...
+   DISCORD_CLIENT_SECRET=...
+   NEXTAUTH_SECRET=any_random_string
+   NEXTAUTH_URL=https://your-dashboard.vercel.app
+   ```
 
-### 7. Setup in Discord
-In any text channel type:
-```
-!setup
-```
-This sends the music control panel. Pin it or use it directly.
+### UptimeRobot
+Ping `https://your-bot.onrender.com` every 5 mins to keep it alive.
 
-## Usage
-- Click **➕ Add Song** → type song name, YouTube URL, or playlist URL
-- Use buttons to control playback
-- Bot auto-joins your voice channel
-- Bot auto-leaves when VC is empty
-
-## Deploy to Render + UptimeRobot
-1. Push to GitHub
-2. New Web Service on Render → connect repo
-3. Add `DISCORD_TOKEN` env var
-4. Deploy
-5. Add UptimeRobot monitor → ping your Render URL every 5 mins
+## Discord Setup
+1. `!setup` in any text channel → pins the music control panel
+2. Join a voice channel
+3. Click **➕ Add Song** → type song name or YouTube URL

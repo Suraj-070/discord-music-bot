@@ -1,5 +1,11 @@
+# Python
 .env
 __pycache__/
 *.pyc
 *.pyo
 .DS_Store
+
+# Dashboard
+dashboard/.env.local
+dashboard/node_modules/
+dashboard/.next/
