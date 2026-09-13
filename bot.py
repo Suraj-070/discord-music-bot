@@ -517,7 +517,7 @@ class MusicControlView(discord.ui.View):
         await emit_queue_update(str(interaction.guild.id))
         await update_panel(interaction.guild)
 
-    @discord.ui.button(emoji="⏹", style=discord.ButtonStyle.danger, row=0)
+    @discord.ui.button(emoji="⏹", style=discord.ButtonStyle.danger, row=1)
     async def stop(self, interaction: discord.Interaction, button):
         await interaction.response.defer()
         state = get_state(interaction.guild.id)
@@ -527,7 +527,7 @@ class MusicControlView(discord.ui.View):
         await sio.emit('stopped', room=str(interaction.guild.id))
         await update_panel(interaction.guild)
 
-    @discord.ui.button(emoji="🔉", style=discord.ButtonStyle.secondary, row=1)
+    @discord.ui.button(emoji="🔉", style=discord.ButtonStyle.secondary, row=2)
     async def vol_down(self, interaction: discord.Interaction, button):
         await interaction.response.defer()
         state = get_state(interaction.guild.id)
@@ -537,7 +537,7 @@ class MusicControlView(discord.ui.View):
         await sio.emit('volume_update', {'volume': state['volume']}, room=str(interaction.guild.id))
         await update_panel(interaction.guild)
 
-    @discord.ui.button(emoji="🔊", style=discord.ButtonStyle.secondary, row=1)
+    @discord.ui.button(emoji="🔊", style=discord.ButtonStyle.secondary, row=2)
     async def vol_up(self, interaction: discord.Interaction, button):
         await interaction.response.defer()
         state = get_state(interaction.guild.id)
@@ -547,12 +547,12 @@ class MusicControlView(discord.ui.View):
         await sio.emit('volume_update', {'volume': state['volume']}, room=str(interaction.guild.id))
         await update_panel(interaction.guild)
 
-    @discord.ui.button(label="➕ Add Song", style=discord.ButtonStyle.success, row=1)
+    @discord.ui.button(label="➕ Add Song", style=discord.ButtonStyle.success, row=2)
     async def add_song(self, interaction: discord.Interaction, button):
         state = get_state(interaction.guild.id)
         await interaction.response.send_modal(AddSongModal(state))
 
-    @discord.ui.button(label="📋 Queue", style=discord.ButtonStyle.secondary, row=1)
+    @discord.ui.button(label="📋 Queue", style=discord.ButtonStyle.secondary, row=2)
     async def queue(self, interaction: discord.Interaction, button):
         state = get_state(interaction.guild.id)
         await interaction.response.send_message(embed=build_queue_embed(state), view=QueueView(state), ephemeral=True)
