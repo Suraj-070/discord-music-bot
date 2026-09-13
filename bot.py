@@ -136,18 +136,18 @@ async def search_songs(query: str, limit=5):
     loop = asyncio.get_event_loop()
     with yt_dlp.YoutubeDL(opts) as ydl:
         try:
-            info = await loop.run_in_executor(None, lambda: ydl.extract_info(f"ytsearch{limit}:{query}", download=False))
+            info = await loop.run_in_executor(None, lambda: ydl.extract_info(f"scsearch{limit}:{query}", download=False))
             results = []
             if 'entries' in info:
                 for entry in info['entries']:
                     if entry:
                         results.append({
-                            "url": f"https://youtube.com/watch?v={entry.get('id', '')}",
+                            "url": entry.get('url', entry.get('webpage_url', '')),
                             "title": entry.get('title', 'Unknown'),
                             "duration": entry.get('duration', 0),
                             "thumbnail": entry.get('thumbnail', ''),
-                            "webpage_url": f"https://youtube.com/watch?v={entry.get('id', '')}",
-                            "uploader": entry.get('uploader', 'Unknown'),
+                            "webpage_url": entry.get('webpage_url', entry.get('url', '')),
+                            "uploader": entry.get('uploader', entry.get('artist', 'Unknown')),
                         })
             return results
         except Exception as e:
