@@ -33,6 +33,7 @@ YDL_OPTS = {
     'no_warnings': True,
     'default_search': 'ytsearch',
     'source_address': '0.0.0.0',
+    'remote_components': 'ejs:github',
     'cookiefile': COOKIES_FILE if _os.path.exists(COOKIES_FILE) else None,
     'extractor_args': {
         'youtube': {
