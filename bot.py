@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
+print(f"🔑 Token loaded: {'YES (length=' + str(len(TOKEN)) + ')' if TOKEN else 'NO - DISCORD_TOKEN not set!'}")
 PORT = int(os.getenv("PORT", 8080))
 
 # Auto update yt-dlp
