@@ -641,7 +641,9 @@ async def play_next(guild):
 
     # Fetch real stream URL if lazy (playlist track)
     if song.get("lazy"):
-        fetched = await fetch_song(song["webpage_url"])
+        # Use sc_query if available (YouTube playlist converted to SC search)
+        search_query = song.get("sc_query") or song.get("title", "")
+        fetched = await fetch_song(search_query)
         if fetched:
             song.update(fetched)
             song["lazy"] = False
