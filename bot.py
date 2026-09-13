@@ -22,6 +22,9 @@ PORT = int(os.getenv("PORT", 8080))
 subprocess.run([sys.executable, "-m", "pip", "install", "-U", "yt-dlp"], capture_output=True)
 
 # ─── Audio Config ─────────────────────────────────────────────────────────────
+COOKIES_FILE = '/etc/secrets/cookies.txt'
+import os as _os
+
 YDL_OPTS = {
     'format': 'bestaudio/best',
     'audioquality': 0,
@@ -30,6 +33,7 @@ YDL_OPTS = {
     'no_warnings': True,
     'default_search': 'ytsearch',
     'source_address': '0.0.0.0',
+    'cookiefile': COOKIES_FILE if _os.path.exists(COOKIES_FILE) else None,
     'extractor_args': {
         'youtube': {
             'player_client': ['web_creator', 'ios', 'mweb'],
