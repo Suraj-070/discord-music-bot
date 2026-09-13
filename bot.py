@@ -11,9 +11,11 @@ import subprocess
 import sys
 from dotenv import load_dotenv
 
+sys.stdout.reconfigure(line_buffering=True)
+
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-print(f"🔑 Token loaded: {'YES (length=' + str(len(TOKEN)) + ')' if TOKEN else 'NO - DISCORD_TOKEN not set!'}")
+print(f"🔑 Token loaded: {'YES (length=' + str(len(TOKEN)) + ')' if TOKEN else 'NO - DISCORD_TOKEN not set!'}", flush=True)
 PORT = int(os.getenv("PORT", 8080))
 
 # Auto update yt-dlp
