@@ -657,7 +657,7 @@ async def play_next(guild):
 
 
 # ─── Commands ─────────────────────────────────────────────────────────────────
-@bot.command(name="setup")
+@bot.command(name="music")
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx):
     state = get_state(ctx.guild.id)
